@@ -1,4 +1,4 @@
-# Undefined_3.0
+# Undefined 3.0
 The Universal Binding of Isaac: Rebirth Corruptor.
 
 
@@ -12,20 +12,27 @@ FAQ:
 
 Q: is ths a vrus
 A: 3 guesses, first two don't count
+
 Q: OmG It poped A HAkeR wINdow wth tEt y u HAKin mE!!!???
 A: First time setup. Unless you reinstall the game it shouldn't do it again.
+
 Q: ir crshed
 A:
 >willingly corrupt game's files
 >complain that it crashes
 >ಠ_ಠ
+
 Q: whre i mac vrson
 A: Nowhere.
+
 Q: Is there a version for Linux?
 A: If enough people want it, I'll create one, but for now nowhere.
+
 Q: y u haCiN mE?!?
 A: ( ͡° ͜ʖ ͡°)
-Q: i want of mr bns wil ride
+
+Q: i want of mr bnes wild ride
 A: Delete everything in (your isaac folder)/resources except for "packed" and you're set.
+
 Q: ur stpid progam crsed
 A: Show me the error message, else I won't be able to do much with it.
