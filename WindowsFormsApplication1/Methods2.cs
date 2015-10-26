@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Diagnostics;
 using System.Xml;
 using System.IO;
-using System.Security.Cryptography;
 using System.Globalization;
 
 namespace Undefined
@@ -48,19 +44,19 @@ namespace Undefined
             var culture = CultureInfo.InvariantCulture;
             if (frame.Attributes["XPosition"] != null)
                 frame.Attributes["XPosition"].Value =
-                    (double.Parse(frame.Attributes["XPosition"].Value, culture) + context.context[0]).ToString();
+                    (double.Parse(frame.Attributes["XPosition"].Value, culture) + ((!FixInvisibleEntities)?(context.context[0]):(context.context[0]%8))).ToString();
             if (frame.Attributes["YPosition"] != null)
                 frame.Attributes["YPosition"].Value =
-                    (double.Parse(frame.Attributes["YPosition"].Value, culture) + context.context[1]).ToString();
+                    (double.Parse(frame.Attributes["YPosition"].Value, culture) + ((!FixInvisibleEntities) ? (context.context[1]) : (context.context[1] % 8))).ToString();
             if (frame.Attributes["Delay"] != null)
                 frame.Attributes["Delay"].Value =
-                    (Math.Abs(double.Parse(frame.Attributes["Delay"].Value, culture) + context.context[2])).ToString();
+                    ((int)(Math.Abs(double.Parse(frame.Attributes["Delay"].Value, culture) + context.context[2]))).ToString();
             if (frame.Attributes["XScale"] != null)
                 frame.Attributes["XScale"].Value =
-                    (double.Parse(frame.Attributes["XScale"].Value, culture) + context.context[3]).ToString();
+                    (double.Parse(frame.Attributes["XScale"].Value, culture) + ((!FixInvisibleEntities) ? (context.context[3]) : (context.context[3] % 8))).ToString();
             if (frame.Attributes["YScale"] != null)
                 frame.Attributes["YScale"].Value =
-                    (double.Parse(frame.Attributes["YScale"].Value, culture) + context.context[4]).ToString();
+                    (double.Parse(frame.Attributes["YScale"].Value, culture) + ((!FixInvisibleEntities) ? (context.context[4]) : (context.context[4] % 8))).ToString();
             if (frame.Attributes["RedTint"] != null)
                 frame.Attributes["RedTint"].Value =
                     (double.Parse(frame.Attributes["RedTint"].Value, culture) + context.context[5]).ToString();
@@ -161,14 +157,14 @@ namespace Undefined
                 if (n.Attributes["baseHP"] != null)
                 {
                     n.Attributes["baseHP"].Value =
-                        (float.Parse(n.Attributes["baseHP"].Value, culture)*
-                         (0.5f + ((float) CorruptionPower/32)*RNG.NextDouble())).ToString();
+                        (!WalkThroughWalls)?((float.Parse(n.Attributes["baseHP"].Value, culture)*
+                         (0.5f + ((float) CorruptionPower/32)*RNG.NextDouble())).ToString()):((n.Attributes["baseHP"].Value == "0")?"0":"1");
                 }
                 if (n.Attributes["collisionDamage"] != null)
                 {
                     n.Attributes["collisionDamage"].Value =
                         (float.Parse(n.Attributes["collisionDamage"].Value, culture)*
-                         (0.5f + ((float) CorruptionPower/32)*RNG.NextDouble())).ToString();
+                         ((DisableContactDamage)?(0.5f + ((float) CorruptionPower/32)*RNG.NextDouble()):0)).ToString();
                 }
                 if (n.Attributes["collisionMass"] != null)
                 {
@@ -179,8 +175,9 @@ namespace Undefined
                 if (n.Attributes["collisionRadius"] != null)
                 {
                     n.Attributes["collisionRadius"].Value =
+                        ((n.Attributes["name"].Value != "Player" || !WalkThroughWalls)?
                         (float.Parse(n.Attributes["collisionRadius"].Value, culture)*
-                         (0.5f + ((float) CorruptionPower/155)*RNG.NextDouble())).ToString();
+                         (0.5f + ((float) CorruptionPower/155)*RNG.NextDouble())).ToString():"0");
                 }
                 if (n.Attributes["friction"] != null)
                 {
@@ -208,6 +205,11 @@ namespace Undefined
                 {
                     n.Attributes["champion"].Value = RNG.Next(0, 2).ToString();
                 }
+                if (n.Attributes["id"].Value == "1" && WalkThroughWalls)
+                {
+                    n.Attributes["numGridCollisionPoints"].Value = "0";
+                }
+
             }
             XmlWriter XMWR = XmlWriter.Create("./__tmp.xml");
             XML.WriteTo(XMWR);

@@ -42,6 +42,14 @@
             this.Begin_Button = new System.Windows.Forms.Button();
             this.CorruptionPower_Textbox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.ParticleGFX_Checkbox = new System.Windows.Forms.CheckBox();
+            this.IsaacSprite_Checkbox = new System.Windows.Forms.CheckBox();
+            this.AntiCrash_Checkbox = new System.Windows.Forms.CheckBox();
+            this.FixInvisible_Checkbox = new System.Windows.Forms.CheckBox();
+            this.ShuffleSounds_Checkbox = new System.Windows.Forms.CheckBox();
+            this.ContactDamage_Checkbox = new System.Windows.Forms.CheckBox();
+            this.BossGFX_Checkbox = new System.Windows.Forms.CheckBox();
+            this.WalkWalls_Checkbox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // EntityGFX_Checkbox
@@ -62,7 +70,7 @@
             this.CorruptFX_Checkbox.AutoSize = true;
             this.CorruptFX_Checkbox.BackColor = System.Drawing.Color.Transparent;
             this.CorruptFX_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.CorruptFX_Checkbox.Location = new System.Drawing.Point(14, 104);
+            this.CorruptFX_Checkbox.Location = new System.Drawing.Point(14, 242);
             this.CorruptFX_Checkbox.Name = "CorruptFX_Checkbox";
             this.CorruptFX_Checkbox.Size = new System.Drawing.Size(86, 17);
             this.CorruptFX_Checkbox.TabIndex = 19;
@@ -75,7 +83,7 @@
             this.ItemGFX_Checkbox.AutoSize = true;
             this.ItemGFX_Checkbox.BackColor = System.Drawing.Color.Transparent;
             this.ItemGFX_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.ItemGFX_Checkbox.Location = new System.Drawing.Point(14, 150);
+            this.ItemGFX_Checkbox.Location = new System.Drawing.Point(14, 311);
             this.ItemGFX_Checkbox.Name = "ItemGFX_Checkbox";
             this.ItemGFX_Checkbox.Size = new System.Drawing.Size(122, 17);
             this.ItemGFX_Checkbox.TabIndex = 25;
@@ -88,11 +96,11 @@
             this.ShuffleMusic_Checkbox.AutoSize = true;
             this.ShuffleMusic_Checkbox.BackColor = System.Drawing.Color.Transparent;
             this.ShuffleMusic_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.ShuffleMusic_Checkbox.Location = new System.Drawing.Point(14, 127);
+            this.ShuffleMusic_Checkbox.Location = new System.Drawing.Point(14, 265);
             this.ShuffleMusic_Checkbox.Name = "ShuffleMusic_Checkbox";
-            this.ShuffleMusic_Checkbox.Size = new System.Drawing.Size(160, 17);
+            this.ShuffleMusic_Checkbox.Size = new System.Drawing.Size(103, 17);
             this.ShuffleMusic_Checkbox.TabIndex = 28;
-            this.ShuffleMusic_Checkbox.Text = "Shuffle Music + Sounds";
+            this.ShuffleMusic_Checkbox.Text = "Shuffle Music";
             this.ShuffleMusic_Checkbox.UseVisualStyleBackColor = false;
             this.ShuffleMusic_Checkbox.CheckedChanged += new System.EventHandler(this.ShuffleMusic_Checkbox_CheckedChanged);
             // 
@@ -101,7 +109,7 @@
             this.ShuffleVideos_Checkbox.AutoSize = true;
             this.ShuffleVideos_Checkbox.BackColor = System.Drawing.Color.Transparent;
             this.ShuffleVideos_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.ShuffleVideos_Checkbox.Location = new System.Drawing.Point(14, 173);
+            this.ShuffleVideos_Checkbox.Location = new System.Drawing.Point(14, 334);
             this.ShuffleVideos_Checkbox.Name = "ShuffleVideos_Checkbox";
             this.ShuffleVideos_Checkbox.Size = new System.Drawing.Size(108, 17);
             this.ShuffleVideos_Checkbox.TabIndex = 30;
@@ -114,7 +122,7 @@
             this.GarbleText_Checkbox.AutoSize = true;
             this.GarbleText_Checkbox.BackColor = System.Drawing.Color.Transparent;
             this.GarbleText_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.GarbleText_Checkbox.Location = new System.Drawing.Point(14, 35);
+            this.GarbleText_Checkbox.Location = new System.Drawing.Point(14, 104);
             this.GarbleText_Checkbox.Name = "GarbleText_Checkbox";
             this.GarbleText_Checkbox.Size = new System.Drawing.Size(92, 17);
             this.GarbleText_Checkbox.TabIndex = 33;
@@ -127,7 +135,7 @@
             this.EntityAnimations_Checkbox.AutoSize = true;
             this.EntityAnimations_Checkbox.BackColor = System.Drawing.Color.Transparent;
             this.EntityAnimations_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.EntityAnimations_Checkbox.Location = new System.Drawing.Point(14, 58);
+            this.EntityAnimations_Checkbox.Location = new System.Drawing.Point(14, 127);
             this.EntityAnimations_Checkbox.Name = "EntityAnimations_Checkbox";
             this.EntityAnimations_Checkbox.Size = new System.Drawing.Size(168, 17);
             this.EntityAnimations_Checkbox.TabIndex = 35;
@@ -140,7 +148,7 @@
             this.EntityStats_Checkbox.AutoSize = true;
             this.EntityStats_Checkbox.BackColor = System.Drawing.Color.Transparent;
             this.EntityStats_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.EntityStats_Checkbox.Location = new System.Drawing.Point(14, 81);
+            this.EntityStats_Checkbox.Location = new System.Drawing.Point(14, 173);
             this.EntityStats_Checkbox.Name = "EntityStats_Checkbox";
             this.EntityStats_Checkbox.Size = new System.Drawing.Size(136, 17);
             this.EntityStats_Checkbox.TabIndex = 36;
@@ -150,7 +158,7 @@
             // 
             // Seed_Textbox
             // 
-            this.Seed_Textbox.Location = new System.Drawing.Point(95, 206);
+            this.Seed_Textbox.Location = new System.Drawing.Point(119, 395);
             this.Seed_Textbox.MaxLength = 255;
             this.Seed_Textbox.Name = "Seed_Textbox";
             this.Seed_Textbox.Size = new System.Drawing.Size(116, 20);
@@ -162,7 +170,7 @@
             this.EnterSeed_Label.AutoSize = true;
             this.EnterSeed_Label.BackColor = System.Drawing.Color.Transparent;
             this.EnterSeed_Label.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.EnterSeed_Label.Location = new System.Drawing.Point(14, 209);
+            this.EnterSeed_Label.Location = new System.Drawing.Point(38, 398);
             this.EnterSeed_Label.Name = "EnterSeed_Label";
             this.EnterSeed_Label.Size = new System.Drawing.Size(74, 13);
             this.EnterSeed_Label.TabIndex = 39;
@@ -171,7 +179,7 @@
             // Begin_Button
             // 
             this.Begin_Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.Begin_Button.Location = new System.Drawing.Point(66, 294);
+            this.Begin_Button.Location = new System.Drawing.Point(90, 483);
             this.Begin_Button.Name = "Begin_Button";
             this.Begin_Button.Size = new System.Drawing.Size(112, 37);
             this.Begin_Button.TabIndex = 40;
@@ -181,7 +189,7 @@
             // 
             // CorruptionPower_Textbox
             // 
-            this.CorruptionPower_Textbox.Location = new System.Drawing.Point(62, 257);
+            this.CorruptionPower_Textbox.Location = new System.Drawing.Point(86, 446);
             this.CorruptionPower_Textbox.MaxLength = 255;
             this.CorruptionPower_Textbox.Name = "CorruptionPower_Textbox";
             this.CorruptionPower_Textbox.Size = new System.Drawing.Size(116, 20);
@@ -193,18 +201,138 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label1.Location = new System.Drawing.Point(47, 241);
+            this.label1.Location = new System.Drawing.Point(71, 430);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(148, 13);
             this.label1.TabIndex = 42;
             this.label1.Text = "Corruption Power (1-255)";
+            // 
+            // ParticleGFX_Checkbox
+            // 
+            this.ParticleGFX_Checkbox.AutoSize = true;
+            this.ParticleGFX_Checkbox.BackColor = System.Drawing.Color.Transparent;
+            this.ParticleGFX_Checkbox.Enabled = false;
+            this.ParticleGFX_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.ParticleGFX_Checkbox.Location = new System.Drawing.Point(14, 35);
+            this.ParticleGFX_Checkbox.Name = "ParticleGFX_Checkbox";
+            this.ParticleGFX_Checkbox.Size = new System.Drawing.Size(256, 17);
+            this.ParticleGFX_Checkbox.TabIndex = 43;
+            this.ParticleGFX_Checkbox.Text = "Shuffle Particle + Tear GFX with the rest";
+            this.ParticleGFX_Checkbox.UseVisualStyleBackColor = false;
+            this.ParticleGFX_Checkbox.CheckedChanged += new System.EventHandler(this.ParticleGFX_Checkbox_CheckedChanged);
+            // 
+            // IsaacSprite_Checkbox
+            // 
+            this.IsaacSprite_Checkbox.AutoSize = true;
+            this.IsaacSprite_Checkbox.BackColor = System.Drawing.Color.Transparent;
+            this.IsaacSprite_Checkbox.Enabled = false;
+            this.IsaacSprite_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.IsaacSprite_Checkbox.Location = new System.Drawing.Point(14, 58);
+            this.IsaacSprite_Checkbox.Name = "IsaacSprite_Checkbox";
+            this.IsaacSprite_Checkbox.Size = new System.Drawing.Size(147, 17);
+            this.IsaacSprite_Checkbox.TabIndex = 44;
+            this.IsaacSprite_Checkbox.Text = "Shuffle Isaac\'s Sprite";
+            this.IsaacSprite_Checkbox.UseVisualStyleBackColor = false;
+            this.IsaacSprite_Checkbox.CheckedChanged += new System.EventHandler(this.IsaacSprite_Checkbox_CheckedChanged);
+            // 
+            // AntiCrash_Checkbox
+            // 
+            this.AntiCrash_Checkbox.AutoSize = true;
+            this.AntiCrash_Checkbox.BackColor = System.Drawing.Color.Transparent;
+            this.AntiCrash_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.AntiCrash_Checkbox.Location = new System.Drawing.Point(14, 357);
+            this.AntiCrash_Checkbox.Name = "AntiCrash_Checkbox";
+            this.AntiCrash_Checkbox.Size = new System.Drawing.Size(188, 17);
+            this.AntiCrash_Checkbox.TabIndex = 45;
+            this.AntiCrash_Checkbox.Text = "Disable Anti-Crash Measures";
+            this.AntiCrash_Checkbox.UseVisualStyleBackColor = false;
+            this.AntiCrash_Checkbox.CheckedChanged += new System.EventHandler(this.AntiCrash_Checkbox_CheckedChanged);
+            // 
+            // FixInvisible_Checkbox
+            // 
+            this.FixInvisible_Checkbox.AutoSize = true;
+            this.FixInvisible_Checkbox.BackColor = System.Drawing.Color.Transparent;
+            this.FixInvisible_Checkbox.Checked = true;
+            this.FixInvisible_Checkbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.FixInvisible_Checkbox.Enabled = false;
+            this.FixInvisible_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.FixInvisible_Checkbox.Location = new System.Drawing.Point(14, 150);
+            this.FixInvisible_Checkbox.Name = "FixInvisible_Checkbox";
+            this.FixInvisible_Checkbox.Size = new System.Drawing.Size(143, 17);
+            this.FixInvisible_Checkbox.TabIndex = 46;
+            this.FixInvisible_Checkbox.Text = "Fix Invisible Entitites";
+            this.FixInvisible_Checkbox.UseVisualStyleBackColor = false;
+            this.FixInvisible_Checkbox.CheckedChanged += new System.EventHandler(this.FixInvisible_Checkbox_CheckedChanged);
+            // 
+            // ShuffleSounds_Checkbox
+            // 
+            this.ShuffleSounds_Checkbox.AutoSize = true;
+            this.ShuffleSounds_Checkbox.BackColor = System.Drawing.Color.Transparent;
+            this.ShuffleSounds_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.ShuffleSounds_Checkbox.Location = new System.Drawing.Point(14, 288);
+            this.ShuffleSounds_Checkbox.Name = "ShuffleSounds_Checkbox";
+            this.ShuffleSounds_Checkbox.Size = new System.Drawing.Size(112, 17);
+            this.ShuffleSounds_Checkbox.TabIndex = 47;
+            this.ShuffleSounds_Checkbox.Text = "Shuffle Sounds";
+            this.ShuffleSounds_Checkbox.UseVisualStyleBackColor = false;
+            this.ShuffleSounds_Checkbox.CheckedChanged += new System.EventHandler(this.ShuffleSounds_Checkbox_CheckedChanged);
+            // 
+            // ContactDamage_Checkbox
+            // 
+            this.ContactDamage_Checkbox.AutoSize = true;
+            this.ContactDamage_Checkbox.BackColor = System.Drawing.Color.Transparent;
+            this.ContactDamage_Checkbox.Enabled = false;
+            this.ContactDamage_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.ContactDamage_Checkbox.Location = new System.Drawing.Point(14, 196);
+            this.ContactDamage_Checkbox.Name = "ContactDamage_Checkbox";
+            this.ContactDamage_Checkbox.Size = new System.Drawing.Size(166, 17);
+            this.ContactDamage_Checkbox.TabIndex = 48;
+            this.ContactDamage_Checkbox.Text = "Disable Contact Damage";
+            this.ContactDamage_Checkbox.UseVisualStyleBackColor = false;
+            this.ContactDamage_Checkbox.CheckedChanged += new System.EventHandler(this.ContactDamage_Checkbox_CheckedChanged);
+            // 
+            // BossGFX_Checkbox
+            // 
+            this.BossGFX_Checkbox.AutoSize = true;
+            this.BossGFX_Checkbox.BackColor = System.Drawing.Color.Transparent;
+            this.BossGFX_Checkbox.Enabled = false;
+            this.BossGFX_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.BossGFX_Checkbox.Location = new System.Drawing.Point(14, 81);
+            this.BossGFX_Checkbox.Name = "BossGFX_Checkbox";
+            this.BossGFX_Checkbox.Size = new System.Drawing.Size(202, 17);
+            this.BossGFX_Checkbox.TabIndex = 49;
+            this.BossGFX_Checkbox.Text = "Shuffle Boss\' GFX with the rest";
+            this.BossGFX_Checkbox.UseVisualStyleBackColor = false;
+            this.BossGFX_Checkbox.CheckedChanged += new System.EventHandler(this.BossGFX_Checkbox_CheckedChanged);
+            // 
+            // WalkWalls_Checkbox
+            // 
+            this.WalkWalls_Checkbox.AutoSize = true;
+            this.WalkWalls_Checkbox.BackColor = System.Drawing.Color.Transparent;
+            this.WalkWalls_Checkbox.Enabled = false;
+            this.WalkWalls_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.WalkWalls_Checkbox.Location = new System.Drawing.Point(14, 219);
+            this.WalkWalls_Checkbox.Name = "WalkWalls_Checkbox";
+            this.WalkWalls_Checkbox.Size = new System.Drawing.Size(314, 17);
+            this.WalkWalls_Checkbox.TabIndex = 50;
+            this.WalkWalls_Checkbox.Text = "Walk Through Walls + Everything is Made of Glass";
+            this.WalkWalls_Checkbox.UseVisualStyleBackColor = false;
+            this.WalkWalls_Checkbox.CheckedChanged += new System.EventHandler(this.WalkWalls_Checkbox_CheckedChanged);
             // 
             // Undefined3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(244, 351);
+            this.ClientSize = new System.Drawing.Size(331, 537);
+            this.Controls.Add(this.WalkWalls_Checkbox);
+            this.Controls.Add(this.BossGFX_Checkbox);
+            this.Controls.Add(this.ContactDamage_Checkbox);
+            this.Controls.Add(this.ShuffleSounds_Checkbox);
+            this.Controls.Add(this.FixInvisible_Checkbox);
+            this.Controls.Add(this.AntiCrash_Checkbox);
+            this.Controls.Add(this.IsaacSprite_Checkbox);
+            this.Controls.Add(this.ParticleGFX_Checkbox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.CorruptionPower_Textbox);
             this.Controls.Add(this.Begin_Button);
@@ -221,9 +349,7 @@
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(260, 390);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(260, 390);
             this.Name = "Undefined3";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Text = "Undefined 3.0";
@@ -248,6 +374,14 @@
         private System.Windows.Forms.Button Begin_Button;
         private System.Windows.Forms.TextBox CorruptionPower_Textbox;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox ParticleGFX_Checkbox;
+        private System.Windows.Forms.CheckBox IsaacSprite_Checkbox;
+        private System.Windows.Forms.CheckBox AntiCrash_Checkbox;
+        private System.Windows.Forms.CheckBox FixInvisible_Checkbox;
+        private System.Windows.Forms.CheckBox ShuffleSounds_Checkbox;
+        private System.Windows.Forms.CheckBox ContactDamage_Checkbox;
+        private System.Windows.Forms.CheckBox BossGFX_Checkbox;
+        private System.Windows.Forms.CheckBox WalkWalls_Checkbox;
     }
 }
 

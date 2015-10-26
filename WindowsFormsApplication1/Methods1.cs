@@ -11,6 +11,7 @@ namespace Undefined
 {
     public partial class Undefined3 
     {
+        // universal string garbling function
         string Garble(string input)
         {
             int corcutoff = 255 - CorruptionPower;
@@ -42,36 +43,69 @@ namespace Undefined
             return new string(let.ToArray());
         }
 
+        static List<string> AntiCrashBlockedEntities = new List<string>() {"Collectible", "Fire Place (attacking)"}; 
+
         void SE_GFX()
         {
+
             TextReader TX = File.OpenText("./entities2.xml");
+
             XmlDocument XML = new XmlDocument();
-            XML.LoadXml(TX.ReadToEnd());
-            XmlWriter XMWR = XmlWriter.Create("./__tmp.xml");
-            TX.Close();
+                XML.LoadXml(TX.ReadToEnd());
+                XmlWriter XMWR;
+                XMWR = XmlWriter.Create("./__tmp.xml");
 
-            XmlNode entities = XML.FirstChild;
+                TX.Close();
 
-            List<string> amnList = new List<string>();
+                XmlNode entities = XML.FirstChild;
+
+                List<string> EntityAnmList = new List<string>();
+            List<string> BossAnmList = new List<string>();
+            List<string> ParticleAnmList = new List<string>();
 
             foreach (XmlNode n in entities.ChildNodes)
             {
-                amnList.Add(n.Attributes["anm2path"].Value);
-                AMN2List.Add(n.Attributes["anm2path"].Value);
+                if (n.Attributes["boss"] != null && n.Attributes["boss"].Value == "1" && !ShuffleBossGFX)
+                {
+                    BossAnmList.Add(n.Attributes["anm2path"].Value);
+                }
+                else if ((n.Attributes["id"].Value == "1000" || n.Attributes["id"].Value == "2") && !ShuffleParticleGFX)
+                {
+                    ParticleAnmList.Add(n.Attributes["anm2path"].Value);              
+                }
+                else
+                {
+                    EntityAnmList.Add(n.Attributes["anm2path"].Value);
+                }             
             }
 
             foreach (XmlNode n in entities.ChildNodes)
             {
-                int pick = RNG.Next(0, amnList.Count - 1);
-                n.Attributes["anm2path"].Value = amnList[pick];
-                amnList.RemoveAt(pick);
+                if (RNG.NextDouble() < 0.1 + (0.9*CorruptionPower/255))
+                {
+                    if (n.Attributes["boss"] != null && n.Attributes["boss"].Value == "1" && !ShuffleBossGFX)
+                    {
+                        n.Attributes["anm2path"].Value = BossAnmList[RNG.Next(0, BossAnmList.Count)];
+                    }
+                    else if ((n.Attributes["id"].Value == "1000" || n.Attributes["id"].Value == "2") && !ShuffleParticleGFX)
+                    {
+                        if (n.Attributes["id"].Value == "1000")
+                        {
+                            n.Attributes["anm2path"].Value = ParticleAnmList[RNG.Next(0, ParticleAnmList.Count)];
+                        }
+                    }
+                    else if ((n.Attributes["name"].Value != "Player"  || ShuffleIsaacSprite) && (!AntiCrashBlockedEntities.Contains(n.Attributes["name"].Value) || AntiCrash))
+                    {
+                        n.Attributes["anm2path"].Value = EntityAnmList[RNG.Next(0, EntityAnmList.Count)];
+                    }                   
+                }
             }
 
             XML.WriteTo(XMWR);
             XMWR.Close();
 
             File.Delete("./entities2.xml");
-            File.Move("./__tmp.xml","./entities2.xml");
+            File.Move("./__tmp.xml", "./entities2.xml");
         }
 
         
