@@ -64,7 +64,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Methods2.cs" />
+    <Compile Include="HelpMethods.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Methods2.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Methods3.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,6 +78,7 @@
     <Compile Include="Methods1.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="SafeMethods.cs" />
     <Compile Include="Undefined3.cs">
       <SubType>Form</SubType>
     </Compile>

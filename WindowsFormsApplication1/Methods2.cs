@@ -1,41 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml;
 using System.IO;
 using System.Globalization;
 
-namespace Undefined
+namespace Undefined3
 {
-    public class AnimCont
-    {
-        public AnimCont()
-        {
-            context[0] = (int)((Undefined3.RNG.NextDouble() - 0.5d) * 2 * Undefined3.CorruptionPower); // xpos
-            context[1] = (int)((Undefined3.RNG.NextDouble() - 0.5d) * 2 * Undefined3.CorruptionPower); // ypos
-            context[2] = (int)((Undefined3.RNG.NextDouble() - 0.5d) * 0.4d * Undefined3.CorruptionPower); // frame
-            context[3] = (int)((Undefined3.RNG.NextDouble() - 0.5d) * 4 * Undefined3.CorruptionPower); // xscale
-            context[4] = (int)((Undefined3.RNG.NextDouble() - 0.5d) * 4 * Undefined3.CorruptionPower); // yscale
-            context[5] = (int)((Undefined3.RNG.NextDouble() - 0.5d) * 3 * Undefined3.CorruptionPower); //r
-            context[6] = (int)((Undefined3.RNG.NextDouble() - 0.5d) * 3 * Undefined3.CorruptionPower); //g
-            context[7] = (int)((Undefined3.RNG.NextDouble() - 0.5d) * 3 * Undefined3.CorruptionPower); //b
-            context[8] = (int)((Undefined3.RNG.NextDouble() - 0.5d) * 3 * Undefined3.CorruptionPower); //ro
-            context[9] = (int)((Undefined3.RNG.NextDouble() - 0.5d) * 3 * Undefined3.CorruptionPower); //go
-            context[10] = (int)((Undefined3.RNG.NextDouble() - 0.5d) * 3 * Undefined3.CorruptionPower); //bo
-            context[11] = (int)((Undefined3.RNG.NextDouble() - 0.5d) * 1 * Undefined3.CorruptionPower); //a
-            context[12] = (int)((Undefined3.RNG.NextDouble() - 0.5d) * 3 * Undefined3.CorruptionPower); //rot
-        }
 
-        public void Mod()
-        {
-            for(int i = 0; i < 13; i++)
-            {
-                context[i] = (int)(context[i]*(1 + (Undefined3.RNG.NextDouble() - 0.5) * (float)Undefined3.CorruptionPower/128));
-            }
-        }
-
-        public int[] context = new int[13];
-    }
 
     public partial class Undefined3
     {
@@ -44,7 +15,7 @@ namespace Undefined
             var culture = CultureInfo.InvariantCulture;
             if (frame.Attributes["XPosition"] != null)
                 frame.Attributes["XPosition"].Value =
-                    (double.Parse(frame.Attributes["XPosition"].Value, culture) + ((!FixInvisibleEntities)?(context.context[0]):(context.context[0]%8))).ToString();
+                    (double.Parse(frame.Attributes["XPosition"].Value, culture) + ((!FixInvisibleEntities) ? (context.context[0]) : (context.context[0] % 8))).ToString();
             if (frame.Attributes["YPosition"] != null)
                 frame.Attributes["YPosition"].Value =
                     (double.Parse(frame.Attributes["YPosition"].Value, culture) + ((!FixInvisibleEntities) ? (context.context[1]) : (context.context[1] % 8))).ToString();
@@ -84,140 +55,206 @@ namespace Undefined
             context.Mod();
         }
 
-        private void CEANIM()
+        private bool CorruptEntityAnimations_Func()
         {
             List<string> tocorrupt = new List<string>();
 
-            TextReader TX = File.OpenText("./entities2.xml");
-            XmlDocument XML = new XmlDocument();
-            XML.LoadXml(TX.ReadToEnd());
-
-            TX.Close();
-
-            XmlNode entities = XML.LastChild;
-
-            foreach (XmlNode n in entities.ChildNodes)
+            if (!LoadXMLAndModify("./entities2.xml", delegate (XmlDocument XML)
             {
-                tocorrupt.Add(n.Attributes["anm2path"].Value);
+                foreach (XmlNode n in XML.LastChild.ChildNodes)
+                {
+                    tocorrupt.Add(n.Attributes["anm2path"].Value);
 
-                n.Attributes["anm2path"].Value =
-                    n.Attributes["anm2path"].Value.Substring(0, n.Attributes["anm2path"].Value.Length - 1) + "c";
+                    n.Attributes["anm2path"].Value =
+                        n.Attributes["anm2path"].Value.Substring(0, n.Attributes["anm2path"].Value.Length - 1) + "c";
+                }
+            }))
+            {
+                return false;
             }
 
-            XmlWriter Xl = XmlWriter.Create("./__tmp.xml");
-            XML.WriteTo(Xl);
-            File.Delete("./entities2.xml");
-            Xl.Close();
-            File.Move("./__tmp.xml", "./entities2.xml");
 
             foreach (string corruptfile in tocorrupt)
             {
-                try
+                string toopen = "";
+                if (File.Exists("./gfx/" + corruptfile))
                 {
-                    TX = File.OpenText("./gfx/" + corruptfile);
+                    toopen = "./gfx/" + corruptfile;
                 }
-                catch (Exception)
+                else
                 {
-
-                    TX = File.OpenText("./gfx/" + corruptfile.Substring(0, corruptfile.Length - 1) + "c");
+                    toopen = "./gfx/" + corruptfile.Substring(0, corruptfile.Length - 1) + "c";
                 }
 
-                XmlWriter XMWR = XmlWriter.Create("./gfx/__tmp.xml");
-                XML = new XmlDocument();
-
-                XML.LoadXml(TX.ReadToEnd());
-                TX.Close();
-
-                AnimCont A = new AnimCont();
-                foreach (XmlNode frame in XML.GetElementsByTagName("Frame"))
+                if (!LoadXMLAndModify(toopen, delegate (XmlDocument XML)
                 {
-                    CorruptFrame(frame, A);
+                    AnimCont A = new AnimCont();
+                    foreach (XmlNode frame in XML.GetElementsByTagName("Frame"))
+                    {
+                        CorruptFrame(frame, A);
+                    }
+                }))
+                {
+                    return false;
                 }
-                XML.WriteTo(XMWR);
-                XMWR.Close();
+
 
                 if (File.Exists("./gfx/" + corruptfile.Substring(0, corruptfile.Length - 1) + "c"))
                 {
-                    File.Delete("./gfx/" + corruptfile.Substring(0, corruptfile.Length - 1) + "c");
+                    if (!Safe.DeleteFile("./gfx/" + corruptfile.Substring(0, corruptfile.Length - 1) + "c"))
+                    {
+                        return false;
+                    }
                 }
-                File.Move("./gfx/__tmp.xml", "./gfx/" + corruptfile.Substring(0, corruptfile.Length - 1) + "c");
+                if (!Safe.MoveFile("./gfx/__tmp.xml", "./gfx/" + corruptfile.Substring(0, corruptfile.Length - 1) + "c"))
+                {
+                    return false;
+                }
             }
+            return true;
         }
 
-        private void CES()
+        private bool CorruptEntityStats_Func()
         {
-            TextReader TX = File.OpenText("./entities2.xml");
-            XmlDocument XML = new XmlDocument();
-            XML.LoadXml(TX.ReadToEnd());
-            TX.Close();
-            XmlNode entities = XML.LastChild;
-            foreach (XmlNode n in entities.ChildNodes)
+            return LoadXMLAndModify("./entities2.xml", delegate (XmlDocument XML)
             {
-                var culture = CultureInfo.InvariantCulture;
-                if (n.Attributes["baseHP"] != null)
+                foreach (XmlNode n in XML.LastChild.ChildNodes)
                 {
-                    n.Attributes["baseHP"].Value =
-                        (!WalkThroughWalls)?((float.Parse(n.Attributes["baseHP"].Value, culture)*
-                         (0.5f + ((float) CorruptionPower/32)*RNG.NextDouble())).ToString()):((n.Attributes["baseHP"].Value == "0")?"0":"1");
-                }
-                if (n.Attributes["collisionDamage"] != null)
-                {
-                    n.Attributes["collisionDamage"].Value =
-                        (float.Parse(n.Attributes["collisionDamage"].Value, culture)*
-                         ((DisableContactDamage)?(0.5f + ((float) CorruptionPower/32)*RNG.NextDouble()):0)).ToString();
-                }
-                if (n.Attributes["collisionMass"] != null)
-                {
-                    n.Attributes["collisionMass"].Value =
-                        (Math.Abs(float.Parse(n.Attributes["collisionMass"].Value, culture)*
-                                  (0.5f + ((float) CorruptionPower/51)*RNG.NextDouble()))).ToString().Replace(',', '.');
-                }
-                if (n.Attributes["collisionRadius"] != null)
-                {
-                    n.Attributes["collisionRadius"].Value =
-                        ((n.Attributes["name"].Value != "Player" || !WalkThroughWalls)?
-                        (float.Parse(n.Attributes["collisionRadius"].Value, culture)*
-                         (0.5f + ((float) CorruptionPower/155)*RNG.NextDouble())).ToString():"0");
-                }
-                if (n.Attributes["friction"] != null)
-                {
-                    n.Attributes["friction"].Value =
-                        (float.Parse(n.Attributes["friction"].Value, culture)*
-                         (0.95f + ((float) CorruptionPower/666)*RNG.NextDouble())).ToString().Replace(',', '.'); ;
-                }
-                if (n.Attributes["shadowSize"] != null)
-                {
-                    n.Attributes["shadowSize"].Value =
-                        (float.Parse(n.Attributes["shadowSize"].Value, culture)*
-                         (0.5f + ((float) CorruptionPower/32)*RNG.NextDouble())).ToString().Replace(',', '.'); ;
-                }
-                if (n.Attributes["stageHP"] != null)
-                {
-                    n.Attributes["stageHP"].Value =
-                        (float.Parse(n.Attributes["stageHP"].Value, culture)*
-                         (0.5f + ((float) CorruptionPower/32)*RNG.NextDouble())).ToString();
-                }
-                if (n.Attributes["boss"] != null)
-                {
-                    n.Attributes["boss"].Value = RNG.Next(0, 2).ToString();
-                }
-                if (n.Attributes["champion"] != null)
-                {
-                    n.Attributes["champion"].Value = RNG.Next(0, 2).ToString();
-                }
-                if (n.Attributes["id"].Value == "1" && WalkThroughWalls)
-                {
-                    n.Attributes["numGridCollisionPoints"].Value = "0";
-                }
+                    var culture = CultureInfo.InvariantCulture;
+                    if (n.Attributes["baseHP"] != null)
+                    {
+                        n.Attributes["baseHP"].Value =
+                            (!WalkThroughWalls) ? ((float.Parse(n.Attributes["baseHP"].Value, culture) *
+                             (0.5f + ((float)CorruptionPower / 32) * RNG.NextDouble())).ToString()) : ((n.Attributes["baseHP"].Value == "0") ? "0" : "1");
+                    }
+                    if (n.Attributes["collisionDamage"] != null)
+                    {
+                        n.Attributes["collisionDamage"].Value =
+                            (float.Parse(n.Attributes["collisionDamage"].Value, culture) *
+                             ((DisableContactDamage) ? (0.5f + ((float)CorruptionPower / 32) * RNG.NextDouble()) : 0)).ToString();
+                    }
+                    if (n.Attributes["collisionMass"] != null)
+                    {
+                        n.Attributes["collisionMass"].Value =
+                            (Math.Abs(float.Parse(n.Attributes["collisionMass"].Value, culture) *
+                                      (0.5f + ((float)CorruptionPower / 51) * RNG.NextDouble()))).ToString().Replace(',', '.');
+                    }
+                    if (n.Attributes["collisionRadius"] != null)
+                    {
+                        n.Attributes["collisionRadius"].Value =
+                            ((n.Attributes["name"].Value != "Player" || !WalkThroughWalls) ?
+                            (float.Parse(n.Attributes["collisionRadius"].Value, culture) *
+                             (0.5f + ((float)CorruptionPower / 155) * RNG.NextDouble())).ToString() : "0");
+                    }
+                    if (n.Attributes["friction"] != null)
+                    {
+                        n.Attributes["friction"].Value =
+                            (float.Parse(n.Attributes["friction"].Value, culture) *
+                             (0.95f + ((float)CorruptionPower / 666) * RNG.NextDouble())).ToString().Replace(',', '.'); ;
+                    }
+                    if (n.Attributes["shadowSize"] != null)
+                    {
+                        n.Attributes["shadowSize"].Value =
+                            (float.Parse(n.Attributes["shadowSize"].Value, culture) *
+                             (0.5f + ((float)CorruptionPower / 32) * RNG.NextDouble())).ToString().Replace(',', '.'); ;
+                    }
+                    if (n.Attributes["stageHP"] != null)
+                    {
+                        n.Attributes["stageHP"].Value =
+                            (float.Parse(n.Attributes["stageHP"].Value, culture) *
+                             (0.5f + ((float)CorruptionPower / 32) * RNG.NextDouble())).ToString();
+                    }
+                    if (n.Attributes["boss"] != null)
+                    {
+                        n.Attributes["boss"].Value = RNG.Next(0, 2).ToString();
+                    }
+                    if (n.Attributes["champion"] != null)
+                    {
+                        n.Attributes["champion"].Value = RNG.Next(0, 2).ToString();
+                    }
+                    if (n.Attributes["id"].Value == "1" && WalkThroughWalls)
+                    {
+                        n.Attributes["numGridCollisionPoints"].Value = "0";
+                    }
 
-            }
-            XmlWriter XMWR = XmlWriter.Create("./__tmp.xml");
-            XML.WriteTo(XMWR);
-            XMWR.Close();
-            File.Delete("./entities2.xml");
-            File.Move("./__tmp.xml", "./entities2.xml");
+                }
+            });
         }
 
+        private bool CorruptFX_Func()
+        {
+            return LoadTXTAndModify("./fxlayers.xml", text => "<a>" + text + "</a>") &&
+
+            LoadXMLAndModify("./fxlayers.xml", delegate (XmlDocument XML)
+            {
+
+
+                foreach (XmlNode fx in XML.GetElementsByTagName("fx"))
+                {
+                    var culture = CultureInfo.InvariantCulture;
+                    fx.Attributes["numLayers"].Value =
+                        (Math.Abs(float.Parse(fx.Attributes["numLayers"].Value, culture) * 0.5 * (float)CorruptionPower / 45 *
+                                  (float)RNG.NextDouble())).ToString();
+                    fx.Attributes["xMin"].Value =
+                        (float.Parse(fx.Attributes["xMin"].Value, culture) * 0.5 * (float)CorruptionPower / 45 *
+                         (float)RNG.NextDouble()).ToString();
+                    fx.Attributes["yMin"].Value =
+                        (float.Parse(fx.Attributes["yMin"].Value, culture) * 0.5 * (float)CorruptionPower / 45 *
+                         (float)RNG.NextDouble()).ToString();
+                    fx.Attributes["xMax"].Value =
+                        (float.Parse(fx.Attributes["xMax"].Value, culture) * 0.5 * (float)CorruptionPower / 45 *
+                         (float)RNG.NextDouble()).ToString();
+                    fx.Attributes["yMax"].Value =
+                        (float.Parse(fx.Attributes["yMax"].Value, culture) * 0.5 * (float)CorruptionPower / 45 *
+                         (float)RNG.NextDouble()).ToString();
+                    fx.Attributes["layer"].Value = (RNG.Next(0, 2) == 0) ? "foreground" : "background";
+                    if (fx.Attributes["stages"] != null) fx.Attributes["stages"].Value = RNG.Next(0, 7).ToString();
+                    if (fx.Attributes["altStage"] != null)
+                        fx.Attributes["altStage"].Value = (RNG.Next(0, 2) == 0) ? "true" : "false";
+                    if (fx.Attributes["anyAlt"] != null)
+                        fx.Attributes["anyAlt"].Value = (RNG.Next(0, 2) == 0) ? "true" : "false";
+                    if (fx.Attributes["parallax"] != null)
+                        fx.Attributes["parallax"].Value =
+                            (float.Parse(fx.Attributes["xMin"].Value, culture) * 0.5 * (float)CorruptionPower / 45 *
+                             (float)RNG.NextDouble()).ToString();
+                }
+
+                foreach (XmlNode fx in XML.GetElementsByTagName("rayGroup"))
+                {
+                    var culture = CultureInfo.InvariantCulture;
+                    fx.Attributes["xMin"].Value =
+                        (float.Parse(fx.Attributes["xMin"].Value, culture) * 3 * (float)CorruptionPower / 45 *
+                         (float)RNG.NextDouble()).ToString();
+                    fx.Attributes["topParallax"].Value =
+                        (float.Parse(fx.Attributes["topParallax"].Value, culture) * 3 * (float)CorruptionPower / 45 *
+                         (float)RNG.NextDouble()).ToString();
+                    fx.Attributes["xMax"].Value =
+                        (float.Parse(fx.Attributes["xMax"].Value, culture) * 3 * (float)CorruptionPower / 45 *
+                         (float)RNG.NextDouble()).ToString();
+                    fx.Attributes["bottomParallax"].Value =
+                        (float.Parse(fx.Attributes["bottomParallax"].Value, culture) * 3 * (float)CorruptionPower / 45 *
+                         (float)RNG.NextDouble()).ToString();
+                    fx.Attributes["rayLength"].Value =
+                        (float.Parse(fx.Attributes["rayLength"].Value, culture) * 3 * (float)CorruptionPower / 45 *
+                         (float)RNG.NextDouble()).ToString();
+                    fx.Attributes["raySpacing"].Value =
+                        (float.Parse(fx.Attributes["raySpacing"].Value, culture) * 3 * (float)CorruptionPower / 45 *
+                         (float)RNG.NextDouble()).ToString();
+                    fx.Attributes["perspective"].Value =
+                        (float.Parse(fx.Attributes["perspective"].Value, culture) * 3 * (float)CorruptionPower / 45 *
+                         (float)RNG.NextDouble()).ToString();
+                    fx.Attributes["stages"].Value = "1a,1b,2a,2b,3a,3b,4a,4b,5a,5b,6a,6b";
+
+                }
+            }) &&
+
+            LoadTXTAndModify("./fxlayers.xml", text => text.Replace("<a>", "").Replace("</a>", ""));
+        }
+    }
+}
+
+
+/*      archived for whenever
         private void CUI()
         {
             List<string> filenames = Directory.GetFiles("./gfx/ui/", "*.*", SearchOption.AllDirectories).ToList();
@@ -243,88 +280,4 @@ namespace Undefined
                 File.Delete(file);
                 File.Move("./gfx/ui/__tmp.xml", file);
             }
-        }
-
-        private void CFX()
-        {
-            
-
-            TextReader TX = File.OpenText("./fxlayers.xml");           
-            XmlDocument XML = new XmlDocument();
-            XML.LoadXml("<a>" + TX.ReadToEnd() + "</a>");
-            TX.Close();
-
-            foreach (XmlNode fx in XML.GetElementsByTagName("fx"))
-            {
-                var culture = CultureInfo.InvariantCulture;
-                fx.Attributes["numLayers"].Value =
-                    (Math.Abs(float.Parse(fx.Attributes["numLayers"].Value, culture)*0.5*(float) CorruptionPower/45*
-                              (float) RNG.NextDouble())).ToString();
-                fx.Attributes["xMin"].Value =
-                    (float.Parse(fx.Attributes["xMin"].Value, culture)*0.5*(float) CorruptionPower/45*
-                     (float) RNG.NextDouble()).ToString();
-                fx.Attributes["yMin"].Value =
-                    (float.Parse(fx.Attributes["yMin"].Value, culture)*0.5*(float) CorruptionPower/45*
-                     (float) RNG.NextDouble()).ToString();
-                fx.Attributes["xMax"].Value =
-                    (float.Parse(fx.Attributes["xMax"].Value, culture)*0.5*(float) CorruptionPower/45*
-                     (float) RNG.NextDouble()).ToString();
-                fx.Attributes["yMax"].Value =
-                    (float.Parse(fx.Attributes["yMax"].Value, culture)*0.5*(float) CorruptionPower/45*
-                     (float) RNG.NextDouble()).ToString();
-                fx.Attributes["layer"].Value = (RNG.Next(0, 2) == 0) ? "foreground" : "background";
-                if (fx.Attributes["stages"] != null) fx.Attributes["stages"].Value = RNG.Next(0, 7).ToString();
-                if (fx.Attributes["altStage"] != null)
-                    fx.Attributes["altStage"].Value = (RNG.Next(0, 2) == 0) ? "true" : "false";
-                if (fx.Attributes["anyAlt"] != null)
-                    fx.Attributes["anyAlt"].Value = (RNG.Next(0, 2) == 0) ? "true" : "false";
-                if (fx.Attributes["parallax"] != null)
-                    fx.Attributes["parallax"].Value =
-                        (float.Parse(fx.Attributes["xMin"].Value, culture)*0.5*(float) CorruptionPower/45*
-                         (float) RNG.NextDouble()).ToString();
-            }
-
-            foreach (XmlNode fx in XML.GetElementsByTagName("rayGroup"))
-            {
-                var culture = CultureInfo.InvariantCulture;
-                fx.Attributes["xMin"].Value =
-                    (float.Parse(fx.Attributes["xMin"].Value, culture)*3*(float) CorruptionPower/45*
-                     (float) RNG.NextDouble()).ToString();
-                fx.Attributes["topParallax"].Value =
-                    (float.Parse(fx.Attributes["topParallax"].Value, culture)*3*(float) CorruptionPower/45*
-                     (float) RNG.NextDouble()).ToString();
-                fx.Attributes["xMax"].Value =
-                    (float.Parse(fx.Attributes["xMax"].Value, culture)*3*(float) CorruptionPower/45*
-                     (float) RNG.NextDouble()).ToString();
-                fx.Attributes["bottomParallax"].Value =
-                    (float.Parse(fx.Attributes["bottomParallax"].Value, culture)*3*(float) CorruptionPower/45*
-                     (float) RNG.NextDouble()).ToString();
-                fx.Attributes["rayLength"].Value =
-                    (float.Parse(fx.Attributes["rayLength"].Value, culture)*3*(float) CorruptionPower/45*
-                     (float) RNG.NextDouble()).ToString();
-                fx.Attributes["raySpacing"].Value =
-                    (float.Parse(fx.Attributes["raySpacing"].Value, culture)*3*(float) CorruptionPower/45*
-                     (float) RNG.NextDouble()).ToString();
-                fx.Attributes["perspective"].Value =
-                    (float.Parse(fx.Attributes["perspective"].Value, culture)*3*(float) CorruptionPower/45*
-                     (float) RNG.NextDouble()).ToString();
-                fx.Attributes["stages"].Value = "1a,1b,2a,2b,3a,3b,4a,4b,5a,5b,6a,6b";
-            }
-
-            XmlWriter XMWR = XmlWriter.Create("./__tmp.xml");
-            XML.WriteTo(XMWR);
-            XMWR.Close();
-
-            TX = File.OpenText("./__tmp.xml");
-            string ntmp = TX.ReadToEnd().Replace("<a>", "").Replace("</a>", "");
-            TX.Close();
-            File.Delete("./ __tmp.xml");
-            StreamWriter SW = new StreamWriter("./__tmp.xml");
-            SW.Write(ntmp);
-            SW.Close();
-
-            File.Delete("./fxlayers.xml");
-            File.Move("./__tmp.xml", "./fxlayers.xml");
-        }
-    }
-}
+        } */
