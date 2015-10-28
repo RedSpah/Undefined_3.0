@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 
 
@@ -15,16 +16,33 @@ namespace Undefined3
                 {
                     music.Add(n.Attributes["path"].Value);
                     if (n.Attributes["intro"] != null) music.Add(n.Attributes["intro"].Value);
-                    if (n.Attributes["layer"] != null) music.Add(n.Attributes["intro"].Value);
-                    if (n.Attributes["layerintro"] != null) music.Add(n.Attributes["intro"].Value);
+                    if (n.Attributes["layer"] != null) music.Add(n.Attributes["layer"].Value);
+                    if (n.Attributes["layerintro"] != null) music.Add(n.Attributes["layerintro"].Value);
                 }
                 foreach (XmlNode n in XML.GetElementsByTagName("track"))
                 {
-                    n.Attributes["path"].Value = music[RNG.Next(0, music.Count)];
-                    if (n.Attributes["intro"] != null) n.Attributes["intro"].Value = music[RNG.Next(0, music.Count)];
-                    if (n.Attributes["layer"] != null) n.Attributes["layer"].Value = music[RNG.Next(0, music.Count)];
+                    if (RNG.NextDouble() < (RNGCutoff + RNGCutoff * CorruptionPower / 255)) { n.Attributes["path"].Value = music[RNG.Next(0, music.Count)]; }
+                    if (n.Attributes["intro"] != null)
+                    {
+                        if (RNG.NextDouble() < (RNGCutoff + RNGCutoff * CorruptionPower / 255))
+                        {
+                            n.Attributes["intro"].Value = music[RNG.Next(0, music.Count)];
+                        }
+                    }
+                    if (n.Attributes["layer"] != null)
+                    {
+                        if (RNG.NextDouble() < (RNGCutoff + RNGCutoff * CorruptionPower / 255))
+                        {
+                            n.Attributes["layer"].Value = music[RNG.Next(0, music.Count)];
+                        }
+                    }
                     if (n.Attributes["layerintro"] != null)
-                        n.Attributes["layerintro"].Value = music[RNG.Next(0, music.Count)];
+                    {
+                        if (RNG.NextDouble() < (RNGCutoff + RNGCutoff * CorruptionPower / 255))
+                        {
+                            n.Attributes["layerintro"].Value = music[RNG.Next(0, music.Count)];
+                        }
+                    }
                 }
             });
         }
@@ -34,14 +52,13 @@ namespace Undefined3
 
             return LoadXMLAndModify("./sounds.xml", delegate (XmlDocument XML)
             {
-                List<string> sounds = new List<string>();
+                List<string> sounds = (from XmlNode n in XML.GetElementsByTagName("sample") select n.Attributes["path"].Value).ToList();
                 foreach (XmlNode n in XML.GetElementsByTagName("sample"))
                 {
-                    sounds.Add(n.Attributes["path"].Value);
-                }
-                foreach (XmlNode n in XML.GetElementsByTagName("sample"))
-                {
-                    n.Attributes["path"].Value = sounds[RNG.Next(0, sounds.Count)];
+                    if (RNG.NextDouble() < (0.85d - 0.85d * CorruptionPower / 255))
+                    {
+                        n.Attributes["path"].Value = sounds[RNG.Next(0, sounds.Count)];
+                    }
                 }
             });
         }
@@ -70,12 +87,22 @@ namespace Undefined3
                     if (x.Name != "trinket")
                     {
                         if (x.Attributes["gfx"] != null)
-                            x.Attributes["gfx"].Value = itemspritenames[RNG.Next(0, itemspritenames.Count)];
+                        {
+                            if (RNG.NextDouble() < (RNGCutoff + RNGCutoff * CorruptionPower / 255))
+                            {
+                                x.Attributes["gfx"].Value = itemspritenames[RNG.Next(0, itemspritenames.Count)];
+                            }
+                        }
                     }
                     else
                     {
                         if (x.Attributes["gfx"] != null)
-                            x.Attributes["gfx"].Value = trinketspritenames[RNG.Next(0, trinketspritenames.Count)];
+                        {
+                            if (RNG.NextDouble() < (RNGCutoff + RNGCutoff * CorruptionPower / 255))
+                            {
+                                x.Attributes["gfx"].Value = trinketspritenames[RNG.Next(0, trinketspritenames.Count)];
+                            }
+                        }
                     }
                 }
             }) &&
@@ -89,7 +116,13 @@ namespace Undefined3
                 }
                 foreach (XmlNode x in XML.LastChild.ChildNodes)
                 {
-                    if (x.Attributes["hud"] != null) x.Attributes["hud"].Value = itemspritenames[RNG.Next(0, itemspritenames.Count)];
+                    if (x.Attributes["hud"] != null)
+                    {
+                        if (RNG.NextDouble() < (RNGCutoff + RNGCutoff * CorruptionPower / 255))
+                        {
+                            x.Attributes["hud"].Value = itemspritenames[RNG.Next(0, itemspritenames.Count)];
+                        }
+                    }
                 }
             });
         }
@@ -106,7 +139,10 @@ namespace Undefined3
                 }
                 foreach (XmlNode x in XML.GetElementsByTagName("anm2part"))
                 {
-                    x.Attributes["anm2"].Value = animp[RNG.Next(0, animp.Count)];
+                    if (RNG.NextDouble() < (RNGCutoff + RNGCutoff * CorruptionPower / 255))
+                    {
+                        x.Attributes["anm2"].Value = animp[RNG.Next(0, animp.Count)];
+                    }
                 }
 
                 foreach (XmlNode x in XML.GetElementsByTagName("videopart"))
@@ -115,7 +151,10 @@ namespace Undefined3
                 }
                 foreach (XmlNode x in XML.GetElementsByTagName("videopart"))
                 {
-                    x.Attributes["file"].Value = animp[RNG.Next(0, animp.Count)];
+                    if (RNG.NextDouble() < (RNGCutoff + RNGCutoff * CorruptionPower / 255))
+                    {
+                        x.Attributes["file"].Value = animp[RNG.Next(0, animp.Count)];
+                    }
                 }
             });
         }

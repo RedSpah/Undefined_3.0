@@ -9,3 +9,6 @@
 
 - 28.10.15 - 1.2.0.0:
 * Substantial rewrite, complete and all-encompassing exception handling
+
+- 28.10.15 (later that night) - 1.2.1.0:
+* Made Corruption Power actually affect everything

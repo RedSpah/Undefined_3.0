@@ -35,7 +35,7 @@ namespace Undefined3
 
                 foreach (XmlNode n in XML.LastChild.ChildNodes)
                 {
-                    if (RNG.NextDouble() < 0.1 + (0.9 * CorruptionPower / 255))
+                    if (RNG.NextDouble() < (RNGCutoff + RNGCutoff * CorruptionPower / 255))
                     {
                         if (n.Attributes["boss"] != null && n.Attributes["boss"].Value == "1" && !ShuffleBossGFX)
                         {

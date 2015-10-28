@@ -56,6 +56,7 @@ namespace Undefined3
         // Randomness
         public static Random RNG;
         public static byte CorruptionPower = 0;
+        public static readonly double RNGCutoff = 0.05; // minimal chance to corrupt (basically a corrupt chance on corruptionpower = 0)
 
 
         // Main corrupting function
