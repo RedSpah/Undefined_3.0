@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CHANGELOG.txt" />
+    <Content Include="LICENSE.txt" />
     <Content Include="Undefined_Icon.ico" />
   </ItemGroup>
   <ItemGroup>
