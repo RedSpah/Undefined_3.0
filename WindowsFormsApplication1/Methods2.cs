@@ -99,17 +99,14 @@ namespace Undefined3
                 }
 
 
-                if (File.Exists("./gfx/" + corruptfile.Substring(0, corruptfile.Length - 1) + "c"))
+                if (!File.Exists("./gfx/" + corruptfile.Substring(0, corruptfile.Length - 1) + "c"))
                 {
-                    if (!Safe.DeleteFile("./gfx/" + corruptfile.Substring(0, corruptfile.Length - 1) + "c"))
+                    if (!Safe.MoveFile( "./gfx/" + corruptfile, "./gfx/" + corruptfile.Substring(0, corruptfile.Length - 1) + "c"))
                     {
                         return false;
                     }
                 }
-                if (!Safe.MoveFile("./gfx/__tmp.xml", "./gfx/" + corruptfile.Substring(0, corruptfile.Length - 1) + "c"))
-                {
-                    return false;
-                }
+                
             }
             return true;
         }

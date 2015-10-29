@@ -21,7 +21,7 @@ namespace Undefined3
         private const string GFXFolder = "./gfx";
         private List<string> ConfigFiles = new List<string>();
         private static readonly string[] ShuffleEntityGFXFiles = { "entities2.xml" };
-        private static readonly string[] GarbleTextFiles = { "fortunes.txt", "rules.txt", "stages.xml", "entities2.xml", "players.xml", "items.xml", "pocketitems.xml" };
+        private static readonly string[] GarbleTextFiles = { "fortunes.txt", "rules.txt", "stages.xml", "players.xml", "items.xml", "pocketitems.xml" };
         private static readonly string[] CorruptEntityAnimationsFiles = { "entities2.xml" };
         private static readonly string[] CorruptEntityStatsFiles = { "entities2.xml" };
         private static readonly string[] CorruptFXFiles = { "fxlayers.xml" };

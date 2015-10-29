@@ -110,7 +110,7 @@ namespace Undefined3
             return true;
         }
 
-        public static bool CopyFile(string to, string from)
+        public static bool CopyFile(string from, string to)
         {
             try
             {

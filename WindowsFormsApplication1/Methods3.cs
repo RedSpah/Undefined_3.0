@@ -129,7 +129,7 @@ namespace Undefined3
 
         bool ShuffleVideos_Func()
         {
-            return LoadXMLAndModify("./videos.xml", delegate (XmlDocument XML)
+            return LoadXMLAndModify("./cutscenes.xml", delegate (XmlDocument XML)
             {
                 List<string> animp = new List<string>();
                 List<string> ogvp = new List<string>();
@@ -147,13 +147,13 @@ namespace Undefined3
 
                 foreach (XmlNode x in XML.GetElementsByTagName("videopart"))
                 {
-                    animp.Add(x.Attributes["file"].Value);
+                    ogvp.Add(x.Attributes["file"].Value);
                 }
                 foreach (XmlNode x in XML.GetElementsByTagName("videopart"))
                 {
                     if (RNG.NextDouble() < (RNGCutoff + RNGCutoff * CorruptionPower / 255))
                     {
-                        x.Attributes["file"].Value = animp[RNG.Next(0, animp.Count)];
+                        x.Attributes["file"].Value = ogvp[RNG.Next(0, animp.Count)];
                     }
                 }
             });
