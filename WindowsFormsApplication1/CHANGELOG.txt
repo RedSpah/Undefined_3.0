@@ -12,3 +12,6 @@
 
 - 28.10.15 (later that night) - 1.2.1.0:
 * Made Corruption Power actually affect everything
+
+- 29.10.15 (at the break of dawn) - 1.2.1.1:
+* Fixed Safe.CopyFile and several functions that broke during the 1.2 update
