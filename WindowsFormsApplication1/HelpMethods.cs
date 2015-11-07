@@ -12,6 +12,10 @@ namespace Undefined3
 {
     public partial class Undefined3
     {
+        bool CorruptRNG()
+        {
+            return RNG.NextDouble() < RNGCutoff + (1 - RNGCutoff) * ((double)CorruptionPower / 255);
+        }
 
         bool LoadXMLAndModify(string filename, Action<XmlDocument> modification)
         {
@@ -66,7 +70,15 @@ namespace Undefined3
         bool LoadTXTAndModify(string filename, Func<string, string> modification)
         {
             TextReader TXR = Safe.OpenTextReader(filename);
+            if (TXR == null)
+            {
+                return false;
+            }
             TextWriter TXW = Safe.OpenStreamWriter("./__tmp.txt");
+            if (TXW == null)
+            {
+                return false;
+            }
             string text = TXR.ReadToEnd();
             TXR.Close();
 
