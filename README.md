@@ -20,7 +20,7 @@ A: First time setup. Unless you reinstall the game it shouldn't do it again.
 
 Q: ir crshed
 
-A:
+A:  
 \>willingly corrupt game's files  
 \>complain that it crashes  
 \>ಠ_ಠ
