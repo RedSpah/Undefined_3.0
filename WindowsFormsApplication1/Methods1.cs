@@ -35,7 +35,7 @@ namespace Undefined3
 
                 foreach (XmlNode n in XML.LastChild.ChildNodes)
                 {
-                    if (CorruptRNG())
+                    if (RNG.NextDouble() < (RNGCutoff + RNGCutoff * CorruptionPower / 255))
                     {
                         if (n.Attributes["boss"] != null && n.Attributes["boss"].Value == "1" && !ShuffleBossGFX)
                         {
@@ -48,7 +48,7 @@ namespace Undefined3
                                 n.Attributes["anm2path"].Value = ParticleAnmList[RNG.Next(0, ParticleAnmList.Count)];
                             }
                         }
-                        else if ((n.Attributes["id"].Value != "1" || ShuffleIsaacSprite) && (!AntiCrashBlockedEntities.Contains(n.Attributes["name"].Value) || AntiCrash))
+                        else if ((n.Attributes["name"].Value != "Player" || ShuffleIsaacSprite) && (!AntiCrashBlockedEntities.Contains(n.Attributes["name"].Value) || AntiCrash))
                         {
                             n.Attributes["anm2path"].Value = EntityAnmList[RNG.Next(0, EntityAnmList.Count)];
                         }
@@ -62,26 +62,6 @@ namespace Undefined3
 
         bool GarbleText_Func()
         {
-            if (IsAfterbirth)
-            {
-                var afort = Safe.OpenStreamWriter("./fortunes.txt");
-                if (afort == null)
-                {
-                    return false;
-                }
-                afort.Write(Garble(AfterbirthFortunesBase));
-                afort.Close();
-
-                afort = Safe.OpenStreamWriter("./rules.txt");
-                if (afort == null)
-                {
-                    return false;
-                }
-                afort.Write(Garble(AfterbirthRulesBase));
-                afort.Close();
-            }
-
-
             bool succ =
                 LoadXMLAndModify("./entities2.xml", delegate (XmlDocument XML)
                 {
@@ -128,51 +108,7 @@ namespace Undefined3
                         }
                     }
                 }) &&
-                ((IsAfterbirth) ? (
 
-                LoadXMLAndModify("minibosses.xml", delegate (XmlDocument XML)
-                {
-                    foreach (XmlNode x in XML.GetElementsByTagName("miniboss"))
-                    {
-                        x.Attributes["name"].Value = Garble(x.Attributes["name"].Value);
-                    }
-                }) &&
-                LoadXMLAndModify("curses.xml", delegate (XmlDocument XML)
-                {
-                    foreach (XmlNode x in XML.GetElementsByTagName("curse"))
-                    {
-                        x.Attributes["name"].Value = Garble(x.Attributes["name"].Value);
-                    }
-                }) &&
-                LoadTXTAndModify("seedmenu.xml", text => "<a>" + text + "</a>") &&
-
-                 LoadXMLAndModify("seedmenu.xml", delegate (XmlDocument XML)
-                 {
-                     foreach (XmlNode x in XML.GetElementsByTagName("seed"))
-                     {
-                         x.Attributes["name"].Value = Garble(x.Attributes["name"].Value);
-                     }
-
-                     foreach (XmlNode x in XML.GetElementsByTagName("confirm"))
-                     {
-                         x.Attributes["name"].Value = Garble(x.Attributes["name"].Value);
-                     }
-
-                     foreach (XmlNode x in XML.GetElementsByTagName("reset"))
-                     {
-                         x.Attributes["name"].Value = Garble(x.Attributes["name"].Value);
-                     }
-
-                     foreach (XmlNode x in XML.GetElementsByTagName("entryDialog"))
-                     {
-                         x.Attributes["unlock"].Value = Garble(x.Attributes["unlock"].Value);
-                         x.Attributes["enable"].Value = Garble(x.Attributes["enable"].Value);
-                     }
-                 }) &&
-                 LoadTXTAndModify("seedmenu.xml", text => text.Replace("<a>", "").Replace("</a>", ""))
-
-                ) :
-                (
                 LoadTXTAndModify("./fortunes.txt", delegate (string text)
                 {
                     return text.Split('\n').Select(x => Garble(x)).Aggregate("", (current, x) => current + (x + "\n"));
@@ -181,7 +117,7 @@ namespace Undefined3
                 LoadTXTAndModify("./rules.txt", delegate (string text)
                 {
                     return text.Split('\n').Select(x => Garble(x)).Aggregate("", (current, x) => current + (x + "\n"));
-                })));
+                });
             return succ;
         }
 

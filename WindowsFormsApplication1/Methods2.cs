@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Xml;
 using System.IO;
 using System.Globalization;
-using System.Linq;
 
 namespace Undefined3
 {
@@ -31,25 +30,25 @@ namespace Undefined3
                     (double.Parse(frame.Attributes["YScale"].Value, culture) + ((!FixInvisibleEntities) ? (context.context[4]) : (context.context[4] % 8))).ToString();
             if (frame.Attributes["RedTint"] != null)
                 frame.Attributes["RedTint"].Value =
-                    ((double.Parse(frame.Attributes["RedTint"].Value, culture) + context.context[5]) % 256).ToString();
+                    (double.Parse(frame.Attributes["RedTint"].Value, culture) + context.context[5]).ToString();
             if (frame.Attributes["GreenTint"] != null)
                 frame.Attributes["GreenTint"].Value =
-                    ((double.Parse(frame.Attributes["GreenTint"].Value, culture) + context.context[6]) % 256).ToString();
+                    (double.Parse(frame.Attributes["GreenTint"].Value, culture) + context.context[6]).ToString();
             if (frame.Attributes["BlueTint"] != null)
                 frame.Attributes["BlueTint"].Value =
-                   ((double.Parse(frame.Attributes["BlueTint"].Value, culture) + context.context[7]) % 256).ToString();
+                    (double.Parse(frame.Attributes["BlueTint"].Value, culture) + context.context[7]).ToString();
             if (frame.Attributes["RedOffset"] != null)
                 frame.Attributes["RedOffset"].Value =
-                    ((double.Parse(frame.Attributes["RedOffset"].Value, culture) + context.context[8]) % 256).ToString();
+                    (double.Parse(frame.Attributes["RedOffset"].Value, culture) + context.context[8]).ToString();
             if (frame.Attributes["GreenOffset"] != null)
                 frame.Attributes["GreenOffset"].Value =
-                    ((double.Parse(frame.Attributes["GreenOffset"].Value, culture) + context.context[9]) % 256).ToString();
+                    (double.Parse(frame.Attributes["GreenOffset"].Value, culture) + context.context[9]).ToString();
             if (frame.Attributes["BlueOffset"] != null)
                 frame.Attributes["BlueOffset"].Value =
-                    ((double.Parse(frame.Attributes["BlueOffset"].Value, culture) + context.context[10]) % 256).ToString();
+                    (double.Parse(frame.Attributes["BlueOffset"].Value, culture) + context.context[10]).ToString();
             if (frame.Attributes["AlphaTint"] != null)
                 frame.Attributes["AlphaTint"].Value =
-                    ((double.Parse(frame.Attributes["AlphaTint"].Value, culture) + context.context[11]) % 256 + 144).ToString();
+                    (double.Parse(frame.Attributes["AlphaTint"].Value, culture) + context.context[11] + 92).ToString();
             if (frame.Attributes["Rotation"] != null)
                 frame.Attributes["Rotation"].Value =
                     (double.Parse(frame.Attributes["Rotation"].Value, culture) + context.context[12]).ToString();
@@ -61,36 +60,55 @@ namespace Undefined3
             List<string> tocorrupt = new List<string>();
 
             if (!LoadXMLAndModify("./entities2.xml", delegate (XmlDocument XML)
-            { tocorrupt.AddRange(from XmlNode n in XML.LastChild.ChildNodes select n.Attributes["anm2path"].Value); }))
             {
-                return false;
-            }
-
-            tocorrupt.RemoveAll(x => x.Length == 0);
-
-            if (
-                !tocorrupt.Select(corruptfile => "./gfx/" + corruptfile)
-                    .All(toopen => LoadXMLAndModify(toopen, delegate (XmlDocument XML)
-                    {
-                        AnimCont A = new AnimCont();
-                        foreach (XmlNode frame in XML.GetElementsByTagName("Frame"))
-                        {
-                            CorruptFrame(frame, A);
-                        }
-                    })))
-            {
-                return false;
-            }
-
-            List<string> itemfiles = Safe.GetFiles("./gfx/characters");
-            return itemfiles.All(file => LoadXMLAndModify(file, delegate (XmlDocument XML)
-            {
-                AnimCont A = new AnimCont();
-                foreach (XmlNode frame in XML.GetElementsByTagName("Frame"))
+                foreach (XmlNode n in XML.LastChild.ChildNodes)
                 {
-                    CorruptFrame(frame, A);
+                    tocorrupt.Add(n.Attributes["anm2path"].Value);
+
+                    n.Attributes["anm2path"].Value =
+                        n.Attributes["anm2path"].Value.Substring(0, n.Attributes["anm2path"].Value.Length - 1) + "c";
                 }
-            }));
+            }))
+            {
+                return false;
+            }
+
+
+            foreach (string corruptfile in tocorrupt)
+            {
+                string toopen = "";
+                if (File.Exists("./gfx/" + corruptfile))
+                {
+                    toopen = "./gfx/" + corruptfile;
+                }
+                else
+                {
+                    toopen = "./gfx/" + corruptfile.Substring(0, corruptfile.Length - 1) + "c";
+                }
+
+                if (!LoadXMLAndModify(toopen, delegate (XmlDocument XML)
+                {
+                    AnimCont A = new AnimCont();
+                    foreach (XmlNode frame in XML.GetElementsByTagName("Frame"))
+                    {
+                        CorruptFrame(frame, A);
+                    }
+                }))
+                {
+                    return false;
+                }
+
+
+                if (!File.Exists("./gfx/" + corruptfile.Substring(0, corruptfile.Length - 1) + "c"))
+                {
+                    if (!Safe.MoveFile( "./gfx/" + corruptfile, "./gfx/" + corruptfile.Substring(0, corruptfile.Length - 1) + "c"))
+                    {
+                        return false;
+                    }
+                }
+                
+            }
+            return true;
         }
 
         private bool CorruptEntityStats_Func()
@@ -103,8 +121,8 @@ namespace Undefined3
                     if (n.Attributes["baseHP"] != null)
                     {
                         n.Attributes["baseHP"].Value =
-                            (!OneHitKills) ? ((float.Parse(n.Attributes["baseHP"].Value, culture) *
-                             (0.5f + ((float)CorruptionPower / 166) * RNG.NextDouble())).ToString()) : ((n.Attributes["baseHP"].Value == "0") ? "0" : "1");
+                            (!WalkThroughWalls) ? ((float.Parse(n.Attributes["baseHP"].Value, culture) *
+                             (0.5f + ((float)CorruptionPower / 32) * RNG.NextDouble())).ToString()) : ((n.Attributes["baseHP"].Value == "0") ? "0" : "1");
                     }
                     if (n.Attributes["collisionDamage"] != null)
                     {
@@ -129,7 +147,7 @@ namespace Undefined3
                     {
                         n.Attributes["friction"].Value =
                             (float.Parse(n.Attributes["friction"].Value, culture) *
-                             (0.95f + ((float)CorruptionPower / 1024) * RNG.NextDouble())).ToString().Replace(',', '.'); ;
+                             (0.95f + ((float)CorruptionPower / 666) * RNG.NextDouble())).ToString().Replace(',', '.'); ;
                     }
                     if (n.Attributes["shadowSize"] != null)
                     {
@@ -140,14 +158,14 @@ namespace Undefined3
                     if (n.Attributes["stageHP"] != null)
                     {
                         n.Attributes["stageHP"].Value =
-                            (!OneHitKills) ? ((float.Parse(n.Attributes["stageHP"].Value, culture) *
-                             (0.5f + ((float)CorruptionPower / 32) * RNG.NextDouble())).ToString()) : ((n.Attributes["stageHP"].Value == "0") ? "0" : "1");
+                            (float.Parse(n.Attributes["stageHP"].Value, culture) *
+                             (0.5f + ((float)CorruptionPower / 32) * RNG.NextDouble())).ToString();
                     }
                     if (n.Attributes["boss"] != null)
                     {
                         n.Attributes["boss"].Value = RNG.Next(0, 2).ToString();
                     }
-                    if (n.Attributes["champion"] != null && !AntiCrash)
+                    if (n.Attributes["champion"] != null)
                     {
                         n.Attributes["champion"].Value = RNG.Next(0, 2).ToString();
                     }
@@ -231,3 +249,32 @@ namespace Undefined3
         }
     }
 }
+
+
+/*      archived for whenever
+        private void CUI()
+        {
+            List<string> filenames = Directory.GetFiles("./gfx/ui/", "*.*", SearchOption.AllDirectories).ToList();
+            foreach (string file in filenames)
+            {
+                TextReader TX = File.OpenText(file);
+                XmlDocument XML = new XmlDocument();
+                XML.LoadXml(TX.ReadToEnd());
+                TX.Close();
+                XmlWriter XMWR = XmlWriter.Create("./gfx/ui/__tmp.xml");
+
+
+
+                AnimCont A = new AnimCont();
+                foreach (XmlNode frame in XML.GetElementsByTagName("Frame"))
+                {
+                    CorruptFrame(frame, A);
+                }
+
+                XML.WriteTo(XMWR);
+                XMWR.Close();
+
+                File.Delete(file);
+                File.Move("./gfx/ui/__tmp.xml", file);
+            }
+        } */

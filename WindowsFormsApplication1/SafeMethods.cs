@@ -161,12 +161,12 @@ namespace Undefined3
             return true;
         }
 
-        public static List<string> GetFiles(string dirname, bool alldirs = true, string format = "*.*")
+        public static List<string> GetFiles(string dirname)
         {
             List<string> output = new List<string>();
             try
             {
-                output = alldirs ? Directory.GetFiles(dirname, format, SearchOption.AllDirectories).ToList() : Directory.GetFiles(dirname, "*.*", SearchOption.TopDirectoryOnly).ToList();
+                output = Directory.GetFiles(dirname, "*.*", SearchOption.AllDirectories).ToList();
             }
             catch (Exception ex)
             {

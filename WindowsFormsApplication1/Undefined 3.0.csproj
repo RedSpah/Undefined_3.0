@@ -73,9 +73,6 @@
     <Compile Include="Methods3.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Methods4.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Methods1.cs">
