@@ -56,6 +56,8 @@ namespace Undefined3
             context.Mod();
         }
 
+
+
         private bool CorruptEntityAnimations_Func()
         {
             List<string> tocorrupt = new List<string>();
@@ -67,6 +69,7 @@ namespace Undefined3
             }
 
             tocorrupt.RemoveAll(x => x.Length == 0);
+            tocorrupt.RemoveAll(x => x.Contains("Fireworks") == true);
 
             if (
                 !tocorrupt.Select(corruptfile => "./gfx/" + corruptfile)
