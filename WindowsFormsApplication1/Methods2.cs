@@ -7,8 +7,6 @@ using System.Linq;
 
 namespace Undefined3
 {
-
-
     public partial class Undefined3
     {
         private void CorruptFrame(XmlNode frame, AnimCont context)
@@ -56,34 +54,29 @@ namespace Undefined3
             context.Mod();
         }
 
-
-
         private bool CorruptEntityAnimations_Func()
         {
             List<string> tocorrupt = new List<string>();
 
             if (!LoadXMLAndModify("./entities2.xml", delegate (XmlDocument XML)
-            { tocorrupt.AddRange(from XmlNode n in XML.LastChild.ChildNodes select n.Attributes["anm2path"].Value); }))
             {
-                return false;
-            }
+                tocorrupt.AddRange(from XmlNode n in XML.LastChild.ChildNodes select n.Attributes["anm2path"].Value);
+            }))
+            { return false; }
 
             tocorrupt.RemoveAll(x => x.Length == 0);
             tocorrupt.RemoveAll(x => x.Contains("Fireworks") == true);
 
-            if (
-                !tocorrupt.Select(corruptfile => "./gfx/" + corruptfile)
-                    .All(toopen => LoadXMLAndModify(toopen, delegate (XmlDocument XML)
+            if (!tocorrupt.Select(corruptfile => "./gfx/" + corruptfile)
+                .All(toopen => LoadXMLAndModify(toopen, delegate (XmlDocument XML)
+                {
+                    AnimCont A = new AnimCont();
+                    foreach (XmlNode frame in XML.GetElementsByTagName("Frame"))
                     {
-                        AnimCont A = new AnimCont();
-                        foreach (XmlNode frame in XML.GetElementsByTagName("Frame"))
-                        {
-                            CorruptFrame(frame, A);
-                        }
-                    })))
-            {
-                return false;
-            }
+                        CorruptFrame(frame, A);
+                    }
+                })))
+            { return false; }
 
             List<string> itemfiles = Safe.GetFiles("./gfx/characters");
             return itemfiles.All(file => LoadXMLAndModify(file, delegate (XmlDocument XML)
@@ -158,19 +151,16 @@ namespace Undefined3
                     {
                         n.Attributes["numGridCollisionPoints"].Value = "0";
                     }
-
                 }
             });
         }
 
         private bool CorruptFX_Func()
         {
-            return LoadTXTAndModify("./fxlayers.xml", text => "<a>" + text + "</a>") &&
+            if (!LoadTXTAndModify("./fxlayers.xml", text => "<a>" + text + "</a>")) { return false; }
 
-            LoadXMLAndModify("./fxlayers.xml", delegate (XmlDocument XML)
+            if (!LoadXMLAndModify("./fxlayers.xml", delegate (XmlDocument XML)
             {
-
-
                 foreach (XmlNode fx in XML.GetElementsByTagName("fx"))
                 {
                     var culture = CultureInfo.InvariantCulture;
@@ -228,9 +218,10 @@ namespace Undefined3
                     fx.Attributes["stages"].Value = "1a,1b,2a,2b,3a,3b,4a,4b,5a,5b,6a,6b";
 
                 }
-            }) &&
+            }))
+            { return false; }
 
-            LoadTXTAndModify("./fxlayers.xml", text => text.Replace("<a>", "").Replace("</a>", ""));
+            return LoadTXTAndModify("./fxlayers.xml", text => text.Replace("<a>", "").Replace("</a>", ""));
         }
     }
 }

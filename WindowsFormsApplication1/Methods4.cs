@@ -22,18 +22,14 @@ namespace Undefined3
                 return false;
             }
 
-            if (uifiles.Any(file => !LoadXMLAndModify(file, delegate (XmlDocument XML)
+            return !uifiles.Any(file => !LoadXMLAndModify(file, delegate (XmlDocument XML)
             {
                 AnimCont A = new AnimCont();
                 foreach (XmlNode frame in XML.GetElementsByTagName("Frame"))
                 {
                     CorruptFrame(frame, A);
                 }
-            })))
-            {
-                return false;
-            }
-            return true;
+            }));
         }
     }
 }

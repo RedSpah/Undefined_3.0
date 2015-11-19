@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using System;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Undefined3
 {
     public partial class Undefined3
     {
-
         bool ShuffleEntityGFX_Func()
         {
             List<string> AntiCrashBlockedEntities = new List<string>() { "Collectible", "Fire Place (attacking)" };
@@ -54,136 +56,135 @@ namespace Undefined3
                         }
                     }
                 }
-
             });
         }
-
-
 
         bool GarbleText_Func()
         {
             if (IsAfterbirth)
             {
                 var afort = Safe.OpenStreamWriter("./fortunes.txt");
-                if (afort == null)
-                {
-                    return false;
-                }
-                afort.Write(Garble(AfterbirthFortunesBase));
+                if (afort == null) { return false; }
                 afort.Close();
+                if (!LoadTXTAndModify("./fortunes.txt", delegate (string s) { return Garble(AfterbirthFortunesBase); })) { return false; }
 
                 afort = Safe.OpenStreamWriter("./rules.txt");
-                if (afort == null)
-                {
-                    return false;
-                }
-                afort.Write(Garble(AfterbirthRulesBase));
+                if (afort == null) { return false; }
                 afort.Close();
-            }
+                if (!LoadTXTAndModify("./rules.txt", delegate (string s) { return Garble(AfterbirthRulesBase); })) { return false; }
 
-
-            bool succ =
-                LoadXMLAndModify("./entities2.xml", delegate (XmlDocument XML)
-                {
-                    foreach (XmlNode n in XML.LastChild.ChildNodes)
-                    {
-                        n.Attributes["name"].Value = Garble(n.Attributes["name"].Value);
-
-                    }
-                }) &&
-
-                LoadXMLAndModify("./stages.xml", delegate (XmlDocument XML)
-                {
-                    foreach (XmlNode n in XML.LastChild.ChildNodes)
-                    {
-                        n.Attributes["name"].Value = Garble(n.Attributes["name"].Value);
-                    }
-                }) &&
-
-                LoadXMLAndModify("./items.xml", delegate (XmlDocument XML)
-                {
-                    foreach (XmlNode n in XML.LastChild.ChildNodes)
-                    {
-                        n.Attributes["name"].Value = Garble(n.Attributes["name"].Value);
-                        n.Attributes["description"].Value = Garble(n.Attributes["description"].Value);
-                    }
-                }) &&
-
-                LoadXMLAndModify("./players.xml", delegate (XmlDocument XML)
-                {
-                    foreach (XmlNode n in XML.LastChild.ChildNodes)
-                    {
-                        n.Attributes["name"].Value = Garble(n.Attributes["name"].Value);
-                    }
-                }) &&
-
-                LoadXMLAndModify("./pocketitems.xml", delegate (XmlDocument XML)
-                {
-                    foreach (XmlNode n in XML.LastChild.ChildNodes)
-                    {
-                        n.Attributes["name"].Value = Garble(n.Attributes["name"].Value);
-                        if (n.Attributes["description"] != null)
-                        {
-                            n.Attributes["description"].Value = Garble(n.Attributes["description"].Value);
-                        }
-                    }
-                }) &&
-                ((IsAfterbirth) ? (
-
-                LoadXMLAndModify("minibosses.xml", delegate (XmlDocument XML)
+                if (!LoadXMLAndModify("minibosses.xml", delegate (XmlDocument XML)
                 {
                     foreach (XmlNode x in XML.GetElementsByTagName("miniboss"))
                     {
                         x.Attributes["name"].Value = Garble(x.Attributes["name"].Value);
                     }
-                }) &&
-                LoadXMLAndModify("curses.xml", delegate (XmlDocument XML)
+                }))
+                { return false; }
+
+                if (!LoadXMLAndModify("curses.xml", delegate (XmlDocument XML)
                 {
                     foreach (XmlNode x in XML.GetElementsByTagName("curse"))
                     {
                         x.Attributes["name"].Value = Garble(x.Attributes["name"].Value);
                     }
-                }) &&
-                LoadTXTAndModify("seedmenu.xml", text => "<a>" + text + "</a>") &&
+                }))
+                { return false; }
 
-                 LoadXMLAndModify("seedmenu.xml", delegate (XmlDocument XML)
-                 {
-                     foreach (XmlNode x in XML.GetElementsByTagName("seed"))
-                     {
-                         x.Attributes["name"].Value = Garble(x.Attributes["name"].Value);
-                     }
+                if (!LoadTXTAndModify("seedmenu.xml", text => "<a>" + text + "</a>")) { return false; }
 
-                     foreach (XmlNode x in XML.GetElementsByTagName("confirm"))
-                     {
-                         x.Attributes["name"].Value = Garble(x.Attributes["name"].Value);
-                     }
+                if (!LoadXMLAndModify("seedmenu.xml", delegate (XmlDocument XML)
+                {
+                    foreach (XmlNode x in XML.GetElementsByTagName("seed"))
+                    {
+                        x.Attributes["name"].Value = Garble(x.Attributes["name"].Value);
+                    }
 
-                     foreach (XmlNode x in XML.GetElementsByTagName("reset"))
-                     {
-                         x.Attributes["name"].Value = Garble(x.Attributes["name"].Value);
-                     }
+                    foreach (XmlNode x in XML.GetElementsByTagName("confirm"))
+                    {
+                        x.Attributes["name"].Value = Garble(x.Attributes["name"].Value);
+                    }
 
-                     foreach (XmlNode x in XML.GetElementsByTagName("entryDialog"))
-                     {
-                         x.Attributes["unlock"].Value = Garble(x.Attributes["unlock"].Value);
-                         x.Attributes["enable"].Value = Garble(x.Attributes["enable"].Value);
-                     }
-                 }) &&
-                 LoadTXTAndModify("seedmenu.xml", text => text.Replace("<a>", "").Replace("</a>", ""))
+                    foreach (XmlNode x in XML.GetElementsByTagName("reset"))
+                    {
+                        x.Attributes["name"].Value = Garble(x.Attributes["name"].Value);
+                    }
 
-                ) :
-                (
-                LoadTXTAndModify("./fortunes.txt", delegate (string text)
+                    foreach (XmlNode x in XML.GetElementsByTagName("entryDialog"))
+                    {
+                        x.Attributes["unlock"].Value = Garble(x.Attributes["unlock"].Value);
+                        x.Attributes["enable"].Value = Garble(x.Attributes["enable"].Value);
+                    }
+                }))
+                { return false; }
+
+                if (!LoadTXTAndModify("seedmenu.xml", text => text.Replace("<a>", "").Replace("</a>", ""))) { return false; }
+            }
+
+            if (!IsAfterbirth)
+            {
+                if (!LoadTXTAndModify("./fortunes.txt", delegate (string text)
                 {
                     return text.Split('\n').Select(x => Garble(x)).Aggregate("", (current, x) => current + (x + "\n"));
-                }) &&
+                }))
+                { return false; }
 
-                LoadTXTAndModify("./rules.txt", delegate (string text)
+                if (!LoadTXTAndModify("./rules.txt", delegate (string text)
                 {
                     return text.Split('\n').Select(x => Garble(x)).Aggregate("", (current, x) => current + (x + "\n"));
-                })));
-            return succ;
+                }))
+                { return false; }
+            }
+
+            if (!LoadXMLAndModify("./entities2.xml", delegate (XmlDocument XML)
+            {
+                foreach (XmlNode n in XML.LastChild.ChildNodes)
+                {
+                    n.Attributes["name"].Value = Garble(n.Attributes["name"].Value);
+
+                }
+            }))
+            { return false; }
+
+            if (!LoadXMLAndModify("./stages.xml", delegate (XmlDocument XML)
+            {
+                foreach (XmlNode n in XML.LastChild.ChildNodes)
+                {
+                    n.Attributes["name"].Value = Garble(n.Attributes["name"].Value);
+                }
+            }))
+            { return false; }
+
+            if (!LoadXMLAndModify("./items.xml", delegate (XmlDocument XML)
+            {
+                foreach (XmlNode n in XML.LastChild.ChildNodes)
+                {
+                    n.Attributes["name"].Value = Garble(n.Attributes["name"].Value);
+                    n.Attributes["description"].Value = Garble(n.Attributes["description"].Value);
+                }
+            }))
+            { return false; }
+
+            if (!LoadXMLAndModify("./players.xml", delegate (XmlDocument XML)
+            {
+                foreach (XmlNode n in XML.LastChild.ChildNodes)
+                {
+                    n.Attributes["name"].Value = Garble(n.Attributes["name"].Value);
+                }
+            }))
+            { return false; }
+
+            return LoadXMLAndModify("./pocketitems.xml", delegate (XmlDocument XML)
+            {
+                foreach (XmlNode n in XML.LastChild.ChildNodes)
+                {
+                    n.Attributes["name"].Value = Garble(n.Attributes["name"].Value);
+                    if (n.Attributes["description"] != null)
+                    {
+                        n.Attributes["description"].Value = Garble(n.Attributes["description"].Value);
+                    }
+                }
+            });
         }
-
     }
 }

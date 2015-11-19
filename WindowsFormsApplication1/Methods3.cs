@@ -49,7 +49,6 @@ namespace Undefined3
 
         bool ShuffleSounds_Func()
         {
-
             return LoadXMLAndModify("./sounds.xml", delegate (XmlDocument XML)
             {
                 List<string> sounds = (from XmlNode n in XML.GetElementsByTagName("sample") select n.Attributes["path"].Value).ToList();
@@ -65,8 +64,7 @@ namespace Undefined3
 
         bool ShuffleItemGFX_Func()
         {
-
-            return LoadXMLAndModify("./items.xml", delegate (XmlDocument XML)
+            if (!LoadXMLAndModify("./items.xml", delegate (XmlDocument XML)
             {
                 List<string> itemspritenames = new List<string>();
                 List<string> trinketspritenames = new List<string>();
@@ -105,9 +103,10 @@ namespace Undefined3
                         }
                     }
                 }
-            }) &&
+            }))
+            { return false; }
 
-            LoadXMLAndModify("./pocketitems.xml", delegate (XmlDocument XML)
+            return LoadXMLAndModify("./pocketitems.xml", delegate (XmlDocument XML)
             {
                 List<string> itemspritenames = new List<string>();
                 foreach (XmlNode x in XML.LastChild.ChildNodes)

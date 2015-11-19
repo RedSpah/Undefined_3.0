@@ -271,13 +271,11 @@ namespace Undefined3
                 if (Seed[0] == '#' && int.TryParse(Seed.Substring(1, Seed.Length - 1), out SeedTime))
                 {
                     RNG = new Random(SeedTime);
-
                 }
                 else
                 {
                     RNG = new Random(Seed.GetHashCode());
                 }
-
             }
             else
             {
@@ -335,16 +333,15 @@ namespace Undefined3
                 }
 
 
-
                 if (!Directory.Exists("./bin"))
                 {
                     MessageBox.Show("Please place \"bin\" directory from Rick's Unpacker in the folder and then try again.");
                     return false;
                 }
 
-                // creating _unpack.bat
-                TextWriter unpackbatch;
+                TextWriter unpackbatch; // creating _unpack.bat
                 unpackbatch = Safe.OpenStreamWriter("./bin/_unpack.bat");
+
                 if (unpackbatch == null)
                 {
                     return false;
@@ -373,8 +370,7 @@ namespace Undefined3
 
                 unpackbatch.Close();
 
-                // Running the _unpack.bat file
-                Process PR = new Process { StartInfo = new ProcessStartInfo(".\\bin\\_unpack.bat") };
+                Process PR = new Process { StartInfo = new ProcessStartInfo(".\\bin\\_unpack.bat") };  // running _unpack.bat 
 
                 try
                 {
