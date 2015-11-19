@@ -51,7 +51,6 @@
             this.BossGFX_Checkbox = new System.Windows.Forms.CheckBox();
             this.WalkWalls_Checkbox = new System.Windows.Forms.CheckBox();
             this.OneHit_Checkbox = new System.Windows.Forms.CheckBox();
-            this.CorruptRooms_Checkbox = new System.Windows.Forms.CheckBox();
             this.CorruptUI_Checkbox = new System.Windows.Forms.CheckBox();
             this.CheckBox_RandomSeed = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
@@ -63,9 +62,9 @@
             this.EntityGFX_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.EntityGFX_Checkbox.Location = new System.Drawing.Point(14, 12);
             this.EntityGFX_Checkbox.Name = "EntityGFX_Checkbox";
-            this.EntityGFX_Checkbox.Size = new System.Drawing.Size(130, 17);
+            this.EntityGFX_Checkbox.Size = new System.Drawing.Size(297, 17);
             this.EntityGFX_Checkbox.TabIndex = 0;
-            this.EntityGFX_Checkbox.Text = "Shuffle Entity GFX";
+            this.EntityGFX_Checkbox.Text = "Shuffle Entity GFX [Warning: Prone to crashing]";
             this.EntityGFX_Checkbox.UseVisualStyleBackColor = false;
             this.EntityGFX_Checkbox.CheckedChanged += new System.EventHandler(this.EntityGFX_Checkbox_CheckedChanged);
             // 
@@ -162,7 +161,7 @@
             // 
             // Seed_Textbox
             // 
-            this.Seed_Textbox.Location = new System.Drawing.Point(168, 471);
+            this.Seed_Textbox.Location = new System.Drawing.Point(168, 448);
             this.Seed_Textbox.MaxLength = 255;
             this.Seed_Textbox.Name = "Seed_Textbox";
             this.Seed_Textbox.Size = new System.Drawing.Size(116, 20);
@@ -174,7 +173,7 @@
             this.EnterSeed_Label.AutoSize = true;
             this.EnterSeed_Label.BackColor = System.Drawing.Color.Transparent;
             this.EnterSeed_Label.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.EnterSeed_Label.Location = new System.Drawing.Point(88, 474);
+            this.EnterSeed_Label.Location = new System.Drawing.Point(88, 451);
             this.EnterSeed_Label.Name = "EnterSeed_Label";
             this.EnterSeed_Label.Size = new System.Drawing.Size(74, 13);
             this.EnterSeed_Label.TabIndex = 39;
@@ -183,7 +182,7 @@
             // Begin_Button
             // 
             this.Begin_Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.Begin_Button.Location = new System.Drawing.Point(104, 535);
+            this.Begin_Button.Location = new System.Drawing.Point(104, 508);
             this.Begin_Button.Name = "Begin_Button";
             this.Begin_Button.Size = new System.Drawing.Size(112, 37);
             this.Begin_Button.TabIndex = 40;
@@ -193,7 +192,7 @@
             // 
             // CorruptionPower_Textbox
             // 
-            this.CorruptionPower_Textbox.Location = new System.Drawing.Point(168, 504);
+            this.CorruptionPower_Textbox.Location = new System.Drawing.Point(168, 481);
             this.CorruptionPower_Textbox.MaxLength = 255;
             this.CorruptionPower_Textbox.Name = "CorruptionPower_Textbox";
             this.CorruptionPower_Textbox.Size = new System.Drawing.Size(116, 20);
@@ -205,7 +204,7 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label1.Location = new System.Drawing.Point(10, 507);
+            this.label1.Location = new System.Drawing.Point(10, 484);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(152, 13);
             this.label1.TabIndex = 42;
@@ -337,25 +336,12 @@
             this.OneHit_Checkbox.UseVisualStyleBackColor = false;
             this.OneHit_Checkbox.CheckedChanged += new System.EventHandler(this.OneHit_Checkbox_CheckedChanged);
             // 
-            // CorruptRooms_Checkbox
-            // 
-            this.CorruptRooms_Checkbox.AutoSize = true;
-            this.CorruptRooms_Checkbox.BackColor = System.Drawing.Color.Transparent;
-            this.CorruptRooms_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.CorruptRooms_Checkbox.Location = new System.Drawing.Point(14, 403);
-            this.CorruptRooms_Checkbox.Name = "CorruptRooms_Checkbox";
-            this.CorruptRooms_Checkbox.Size = new System.Drawing.Size(301, 17);
-            this.CorruptRooms_Checkbox.TabIndex = 52;
-            this.CorruptRooms_Checkbox.Text = "Corrupt Rooms [experimental, doesn\'t work] [yet]";
-            this.CorruptRooms_Checkbox.UseVisualStyleBackColor = false;
-            this.CorruptRooms_Checkbox.CheckedChanged += new System.EventHandler(this.CorruptRooms_Checkbox_CheckedChanged);
-            // 
             // CorruptUI_Checkbox
             // 
             this.CorruptUI_Checkbox.AutoSize = true;
             this.CorruptUI_Checkbox.BackColor = System.Drawing.Color.Transparent;
             this.CorruptUI_Checkbox.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.CorruptUI_Checkbox.Location = new System.Drawing.Point(14, 426);
+            this.CorruptUI_Checkbox.Location = new System.Drawing.Point(14, 403);
             this.CorruptUI_Checkbox.Name = "CorruptUI_Checkbox";
             this.CorruptUI_Checkbox.Size = new System.Drawing.Size(84, 17);
             this.CorruptUI_Checkbox.TabIndex = 53;
@@ -368,7 +354,7 @@
             this.CheckBox_RandomSeed.AutoSize = true;
             this.CheckBox_RandomSeed.BackColor = System.Drawing.Color.Transparent;
             this.CheckBox_RandomSeed.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.CheckBox_RandomSeed.Location = new System.Drawing.Point(14, 449);
+            this.CheckBox_RandomSeed.Location = new System.Drawing.Point(14, 426);
             this.CheckBox_RandomSeed.Name = "CheckBox_RandomSeed";
             this.CheckBox_RandomSeed.Size = new System.Drawing.Size(256, 17);
             this.CheckBox_RandomSeed.TabIndex = 54;
@@ -380,10 +366,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(331, 584);
+            this.ClientSize = new System.Drawing.Size(331, 557);
             this.Controls.Add(this.CheckBox_RandomSeed);
             this.Controls.Add(this.CorruptUI_Checkbox);
-            this.Controls.Add(this.CorruptRooms_Checkbox);
             this.Controls.Add(this.OneHit_Checkbox);
             this.Controls.Add(this.WalkWalls_Checkbox);
             this.Controls.Add(this.BossGFX_Checkbox);
@@ -444,7 +429,6 @@
         private System.Windows.Forms.CheckBox BossGFX_Checkbox;
         private System.Windows.Forms.CheckBox WalkWalls_Checkbox;
         private System.Windows.Forms.CheckBox OneHit_Checkbox;
-        private System.Windows.Forms.CheckBox CorruptRooms_Checkbox;
         private System.Windows.Forms.CheckBox CorruptUI_Checkbox;
         private System.Windows.Forms.CheckBox CheckBox_RandomSeed;
     }

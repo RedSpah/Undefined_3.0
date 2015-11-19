@@ -223,7 +223,7 @@ namespace Undefined3
             ContactDamage_Checkbox.Enabled = false;
             ShuffleSounds_Checkbox.Enabled = false;
             OneHit_Checkbox.Enabled = false;
-            CorruptRooms_Checkbox.Enabled = false;
+            //CorruptRooms_Checkbox.Enabled = false;
             CorruptUI_Checkbox.Enabled = false;
             CheckBox_RandomSeed.Enabled = false;
         }
@@ -250,7 +250,7 @@ namespace Undefined3
             ContactDamage_Checkbox.Enabled = CorruptEntityStats;
             ShuffleSounds_Checkbox.Enabled = true;
             OneHit_Checkbox.Enabled = CorruptEntityStats;
-            CorruptRooms_Checkbox.Enabled = true;
+            //   CorruptRooms_Checkbox.Enabled = true;
             CorruptUI_Checkbox.Enabled = true;
             CheckBox_RandomSeed.Enabled = true;
         }
@@ -837,7 +837,7 @@ namespace Undefined3
 
         private void CorruptRooms_Checkbox_CheckedChanged(object sender, EventArgs e)
         {
-            CorruptRooms = CorruptRooms_Checkbox.Checked;
+            //    CorruptRooms = CorruptRooms_Checkbox.Checked;
         }
 
         private void CorruptUI_Checkbox_CheckedChanged(object sender, EventArgs e)
