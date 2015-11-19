@@ -24,3 +24,6 @@
 
 - 19.11.15 - 1.3.3.9:
 * Code cleanup (as much as you can clean up delegates anyway)
+
+- 19.11.15 (literally 5 minutes later) - 1.4.0.0:
+* Deleted not implemented corrupt rooms button
